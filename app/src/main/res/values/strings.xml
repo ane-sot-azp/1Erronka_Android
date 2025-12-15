@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OSIS Login</string>
+    <string name="login_title">Inicio de Sesión</string>
+    <string name="email_hint">Correo electrónico</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="login_button">Iniciar Sesión</string>
+    <string name="home_title">Bienvenido</string>
+    <string name="logout_button">Cerrar Sesión</string>
+    <string name="invalid_credentials">Credenciales inválidas</string>
+    <string name="loading">Cargando...</string>
+</resources>
