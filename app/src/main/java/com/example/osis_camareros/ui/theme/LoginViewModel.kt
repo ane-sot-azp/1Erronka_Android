@@ -80,50 +80,79 @@ class LoginViewModel(
      * Cambia la URL según uses emulador o móvil físico.
      */
     fun loginWithApi() {
-        val email = _uiState.value.email
-        val password = _uiState.value.password
+        val erabiltzailea = _uiState.value.email
+        val pasahitza = _uiState.value.password
 
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
             try {
-                val response = withContext(Dispatchers.IO) {
-                    val url = URL("http://172.16.238.78:5000/api/login") // tu IP
+                val result = withContext(Dispatchers.IO) {
+                    val url = URL("http://192.168.1.144:5000/api/login") // ajusta IP / 10.0.2.2
                     val conn = (url.openConnection() as HttpURLConnection).apply {
                         requestMethod = "POST"
-                        setRequestProperty("Content-Type", "application/json")
+                        setRequestProperty("Content-Type", "application/json; charset=utf-8")
+                        setRequestProperty("Accept", "application/json")
                         doOutput = true
                         connectTimeout = 15000
                         readTimeout = 15000
                     }
 
-                    val jsonBody = """{"email":"$email","password":"$password"}"""
+                    val jsonBody =
+                        """{ "erabiltzailea": "$erabiltzailea", "pasahitza": "$pasahitza" }"""
+
                     conn.outputStream.use { os ->
                         os.write(jsonBody.toByteArray(Charsets.UTF_8))
                     }
 
                     val code = conn.responseCode
-                    val stream =
-                        if (code in 200..299) conn.inputStream else conn.errorStream
+
+                    // Igual que en Java: si 2xx -> inputStream; si no, errorStream
+                    val stream = if (code in 200..299) {
+                        conn.inputStream
+                    } else {
+                        conn.errorStream
+                    }
+
                     val body = stream.bufferedReader().use { it.readText() }
 
-                    code to body
+                    // Interpretar como en LoginService.login()
+                    val status = when {
+                        code == 200 -> "OK"
+                        body.contains("Erabiltzaile edo pasahitz okerra") -> "BAD_CREDENTIALS"
+                        body.contains("Ez duzu baimenik sartzeko") -> "NO_PERMISSION"
+                        else -> "ERROR"
+                    }
+
+                    status
                 }
 
-                val (code, body) = response
-
-                if (code in 200..299) {
-                    // Aquí deberías parsear el JSON que devuelva tu API.
-                    // De momento asumimos que si es 200 es login OK.
-                    sessionManager.saveUserSession(email, email) // ajusta fullName según tu API
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        isSuccess = true
-                    )
-                } else {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        error = "Error de login (${code})"
-                    )
+                when (result) {
+                    "OK" -> {
+                        // Aquí podrías parsear datos del usuario si tu API los devuelve
+                        sessionManager.saveUserSession(erabiltzailea, erabiltzailea)
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            isSuccess = true
+                        )
+                    }
+                    "BAD_CREDENTIALS" -> {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            error = "Erabiltzaile edo pasahitz okerra"
+                        )
+                    }
+                    "NO_PERMISSION" -> {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            error = "Ez duzu baimenik sartzeko"
+                        )
+                    }
+                    else -> {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            error = "Error de login"
+                        )
+                    }
                 }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
@@ -133,6 +162,7 @@ class LoginViewModel(
             }
         }
     }
+
 
     fun resetSuccess() {
         _uiState.value = _uiState.value.copy(isSuccess = false)
