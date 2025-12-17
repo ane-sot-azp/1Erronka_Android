@@ -7,8 +7,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
 
 @Composable
 fun HomeScreen(
@@ -39,18 +42,28 @@ fun HomeScreen(
                 containerColor = MaterialTheme.colorScheme.primaryContainer
             )
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "Nombre: ${userName ?: ""}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                Text(
-                    text = "Email: ${userEmail ?: ""}",
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_osis),
+                        contentDescription = "Logo OSIS",
+                        modifier = Modifier
+                            .size(250.dp)
+                            .padding(bottom = 16.dp)
+                    )
+                    Text(
+                        text = "Zorionak! Logina zuzena izan da.",
+                        style = MaterialTheme.typography.headlineMedium,
+                        modifier = Modifier.padding(bottom = 32.dp)
+                    )
+                }
             }
         }
 
@@ -65,7 +78,8 @@ fun HomeScreen(
                 .fillMaxWidth()
                 .height(48.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.error
+                containerColor = Color(red = 30, green = 53, blue = 92),
+                contentColor = Color(red = 255, green = 255, blue = 255)
             )
         ) {
             Text(stringResource(R.string.logout_button))

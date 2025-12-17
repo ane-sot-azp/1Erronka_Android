@@ -1,10 +1,13 @@
 package com.example.osis_camareros.ui.theme
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
@@ -31,6 +34,13 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo_osis),
+            contentDescription = "Logo OSIS",
+            modifier = Modifier
+                .size(250.dp)
+                .padding(bottom = 16.dp)
+        )
         Text(
             text = stringResource(R.string.login_title),
             style = MaterialTheme.typography.headlineLarge,
@@ -76,7 +86,8 @@ fun LoginScreen(
             if (uiState.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(20.dp),
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = Color(red =30, green =53, blue =92)
+                    //color = MaterialTheme.colorScheme.onPrimary
                 )
             } else {
                 Text(stringResource(R.string.login_button))
@@ -85,15 +96,5 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
-            text = "Demo: admin@example.com / 123456",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.secondary
-        )
-        Text(
-            text = "O: user@example.com / password",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.secondary
-        )
     }
 }

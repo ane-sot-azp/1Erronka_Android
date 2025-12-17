@@ -98,7 +98,7 @@ class LoginViewModel(
                     }
 
                     val jsonBody =
-                        """{ "erabiltzailea": "$erabiltzailea", "pasahitza": "$pasahitza" }"""
+                        "{ \"erabiltzailea\": \"$erabiltzailea\", \"pasahitza\": \"$pasahitza\" }"
 
                     conn.outputStream.use { os ->
                         os.write(jsonBody.toByteArray(Charsets.UTF_8))
