@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.osis_camareros"
+    namespace = "com.example.osislogin"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.osis_camareros"
+        applicationId = "com.example.osislogin"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation("androidx.compose.material:material-icons-extended")
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material.components)
 
