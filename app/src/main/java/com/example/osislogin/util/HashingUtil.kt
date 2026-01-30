@@ -1,4 +1,4 @@
-package com.example.osis_camareros.util
+package com.example.osislogin.util
 
 import java.security.MessageDigest
 import java.util.Base64

@@ -1,4 +1,4 @@
-package com.example.osis_camareros.data
+package com.example.osislogin.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,5 +9,6 @@ data class User(
     val id: Int = 0,
     val email: String,
     val password: String, // This will be hashed
-    val fullName: String
+    val fullName: String,
+    val pin: String // This will be hashed
 )
